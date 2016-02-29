@@ -183,6 +183,10 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
             sampleXML: isXML ? SwaggerUi.partials.signature.createXMLSample(value.definition, value.models) : false,
             signature: SwaggerUi.partials.signature.getModelSignature(value.name, value.definition, value.models, value.modelPropertyMacro)
           };
+        } else {
+          signatureModel = {
+            signature: SwaggerUi.partials.signature.getPrimitiveSignature(value)
+          };
         }
       }
     } else if (this.model.responseClassSignature && this.model.responseClassSignature !== 'string') {
@@ -713,6 +717,15 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
         var href = window.URL.createObjectURL(blob);
         var fileName = response.url.substr(response.url.lastIndexOf('/') + 1);
         var download = [type, fileName, href].join(':');
+
+        // Use filename from response header
+        var disposition = headers['content-disposition'] || headers['Content-Disposition'];
+        if(typeof disposition !== 'undefined') {
+          var responseFilename = /filename=([^;]*);?/.exec(disposition);
+          if(responseFilename !== null && responseFilename.length > 1) {
+            download = responseFilename[1];
+          }
+        }
 
         a.setAttribute('href', href);
         a.setAttribute('download', download);
