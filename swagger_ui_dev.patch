@@ -1,0 +1,13 @@
+diff --git a/src/main/html/index.html b/src/main/html/index.html
+index d95471a..ba72b9b 100644
+--- a/src/main/html/index.html
++++ b/src/main/html/index.html
+@@ -36,7 +36,7 @@
+       if (url && url.length > 1) {
+         url = decodeURIComponent(url[1]);
+       } else {
+-        url = "http://petstore.swagger.io/v2/swagger.json";
++        url = "http://localhost:5000/static/external-api/spec.json";
+       }
+ 
+       hljs.configure({
